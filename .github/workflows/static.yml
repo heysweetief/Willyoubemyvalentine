@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Experience</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+font-family:'Poppins',sans-serif;
+min-height:100vh;
+background:linear-gradient(135deg,#4a0d16,#7a1826,#4a0d16);
+background-size:300% 300%;
+animation:bgShift 14s ease infinite;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+overflow:hidden;
+}
+
+@keyframes bgShift{
+0%,100%{background-position:0% 50%}
+50%{background-position:100% 50%}
+}
+
+.scene{
+display:none;
+text-align:center;
+width:100%;
+max-width:520px;
+padding:40px;
+background:rgba(0,0,0,0.55);
+backdrop-filter:blur(18px);
+border-radius:22px;
+box-shadow:0 30px 80px rgba(0,0,0,0.6);
+animation:fade 0.5s ease;
+}
+
+.active{display:block}
+
+@keyframes fade{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+h1{
+font-family:'Great Vibes',cursive;
+font-size:clamp(2.6rem,7vw,3.4rem);
+margin-bottom:18px;
+}
+
+p{
+font-size:1.05rem;
+line-height:1.6;
+opacity:0.95;
+}
+
+.btn{
+margin:12px 6px;
+padding:13px 28px;
+border:none;
+border-radius:999px;
+font-size:1rem;
+font-weight:600;
+cursor:pointer;
+transition:0.3s ease;
+}
+
+.primary{background:#b3122d;color:white;box-shadow:0 0 20px rgba(179,18,45,0.8)}
+.secondary{background:rgba(255,255,255,0.18);color:white}
+
+.btn:hover{transform:scale(1.06)}
+
+.whatsapp{
+display:inline-block;
+margin-top:18px;
+padding:12px 24px;
+border-radius:999px;
+background:#25D366;
+color:white;
+text-decoration:none;
+font-weight:600;
+}
+
+/* YES Explosion */
+@keyframes burst{
+0%{transform:scale(0);opacity:1}
+100%{transform:scale(2.5);opacity:0}
+}
+
+/* NO Dramatic Collapse */
+@keyframes collapse{
+0%{transform:scale(1);filter:blur(0)}
+50%{transform:scale(0.92);filter:blur(3px)}
+100%{transform:scale(1);filter:blur(0)}
+}
+
+/* Screen vignette */
+.vignette{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+background:radial-gradient(circle, transparent 40%, rgba(0,0,0,0.85) 100%);
+opacity:0;
+transition:0.8s;
+z-index:4;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="vignette" id="vignette"></div>
+
+<div class="scene active" id="scene1">
+<h1>Hey Fousiya 💫</h1>
+<p id="introText"></p>
+<button class="btn primary" onclick="nextScene(2)">Continue</button>
+</div>
+
+<div class="scene" id="scene2">
+<h1>Something Honest</h1>
+<p id="storyText"></p>
+<button class="btn primary" onclick="nextScene(3)">Continue</button>
+<button class="btn secondary" onclick="nextScene(1)">Back</button>
+</div>
+
+<div class="scene" id="scene3">
+<h1>One Question</h1>
+<p>Will you be my Valentine? 💌</p>
+<button class="btn primary" onclick="yesPath()">Yes</button>
+<button class="btn secondary" onclick="noPath()">No</button>
+<button class="btn secondary" onclick="nextScene(2)">Back</button>
+</div>
+
+<div class="scene" id="scene4">
+<h1 id="resultTitle"></h1>
+<p id="resultText"></p>
+<div id="finalReveal" style="display:none;margin-top:15px">
+<p id="finalExtra"></p>
+<h3>7904060888</h3>
+<a class="whatsapp" href="https://wa.me/917904060888" target="_blank">Message</a>
+</div>
+<button class="btn secondary" onclick="nextScene(3)">Back</button>
+</div>
+
+<script>
+
+function nextScene(n){
+document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+document.getElementById('scene'+n).classList.add('active');
+}
+
+/* TYPE TEXT */
+function typeText(el,text){
+let i=0;
+el.innerHTML="";
+function t(){
+if(i<text.length){
+el.innerHTML+=text.charAt(i);
+i++;
+setTimeout(t,30);
+}
+}
+t();
+}
+
+typeText(introText,"Most people show up with roses 🌹 and chocolates. I thought I'd show up with effort and code.");
+setTimeout(()=>{
+typeText(storyText,"We don't really know each other yet. But from what I've noticed, I like your vibe. I'd love to know more about you if you're okay with that.");
+},1800);
+
+/* YES EFFECT 10/10 */
+function yesPath(){
+nextScene(4);
+
+for(let i=0;i<130;i++){
+let el=document.createElement('div');
+el.innerHTML=['💖','💕','✨'][Math.floor(Math.random()*3)];
+el.style.position='fixed';
+el.style.left='50%';
+el.style.top='50%';
+el.style.fontSize=(22+Math.random()*20)+'px';
+el.style.animation='burst 1.4s ease forwards';
+let angle=Math.random()*2*Math.PI;
+let radius=200+Math.random()*250;
+el.style.transform=`translate(${Math.cos(angle)*radius}px,${Math.sin(angle)*radius}px)`;
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),1500);
+}
+
+resultTitle.innerHTML="Wait… are you serious? 😭";
+resultText.innerHTML="You just made my day.";
+finalExtra.innerHTML="I made this. It's Ameer, your friendly neighbourhood senior. Since you made it this far… text me.";
+finalReveal.style.display="block";
+}
+
+/* NO EFFECT 10/10 */
+function noPath(){
+nextScene(4);
+
+// collapse UI
+scene4.style.animation="collapse 0.8s ease";
+
+// vignette darken
+vignette.style.opacity="1";
+
+setTimeout(()=>{
+resultTitle.innerHTML="It's not available...";
+},600);
+
+setTimeout(()=>{
+resultText.innerHTML="Come on girl don't do this to me 😭";
+},1600);
+
+setTimeout(()=>{
+resultText.innerHTML="Haha okay okay… I'm kidding. I completely respect that.";
+},3200);
+
+setTimeout(()=>{
+finalExtra.innerHTML="I still genuinely like you and would love to know you more. We can still stop by Siri sometime.";
+finalReveal.style.display="block";
+},5000);
+
+setTimeout(()=>{
+vignette.style.opacity="0";
+},6500);
+}
+
+</script>
+
+</body>
+</html>
